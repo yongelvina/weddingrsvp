@@ -54,15 +54,18 @@
 </head>
 <body>
 
-    <!-- 1. VIDEO INTRO OVERLAY -->
-    <div id="intro-overlay">
-        <!-- Replace 'your-animation.mp4' with your hosted video file URL -->
-        <video id="intro-video" autoplay muted playsinline>
-            <source src="your-animation.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
-        <button class="skip-btn" onclick="dismissIntro()">Skip Intro</button>
-    </div>
+    <!-- 1. VIDEO INTRO OVERLAY WITH DYNAMIC GREETING -->
+<div id="intro-overlay">
+    <!-- The greeting text that overlays on top of the video -->
+    <div id="video-greeting">Dear Guest,</div>
+
+    <video id="intro-video" autoplay muted playsinline>
+        <source src="your-animation.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+    <button class="skip-btn" onclick="dismissIntro()">Skip Intro</button>
+</div>
+
 
     <!-- MAIN PAGE CONTENT (Hidden until intro dismisses to avoid premature scrolling) -->
     <main id="main-content">
