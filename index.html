@@ -5,6 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>You're Invited!</title>
     <style>
+        #video-greeting {
+    position: absolute;
+    /* Adjust 'top' or 'bottom' to position the text where you want it */
+    top: 15%; 
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10000; /* Puts it directly in front of the video track */
+    color: #ffffff; /* Elegant white text */
+    font-size: 32px; /* Large, readable size for mobile and desktop */
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: capitalize;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7); /* Ensures readability over bright video frames */
+    font-family: 'Playfair Display', 'Georgia', serif; /* Optional romantic/elegant font backup */
+    text-align: center;
+    width: 90%;
+    pointer-events: none; /* Allows clicks to pass through to the video if needed */
+}
+
         /* Global & Reset Styles */
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Segoe UI', Arial, sans-serif; background: #fdfbf7; color: #2c3e50; overflow-x: hidden; }
@@ -143,6 +162,18 @@
     </main>
 
 <script>
+    // --- URL PARAMETER & RSVP CONTROLLER ---
+const urlParams = new URLSearchParams(window.location.search);
+const rawName = urlParams.get('guest'); 
+const guestName = rawName ? decodeURIComponent(rawName.replace(/\+/g, ' ')) : "Guest";
+
+// 1. UPDATE THE VIDEO OVERLAY GREETING
+document.getElementById('video-greeting').textContent = `Dear ${guestName},`;
+
+// 2. UPDATE THE RSVP FORM GREETING (At the bottom of the page)
+document.getElementById('greeting').textContent = `Dear ${guestName},`;
+document.getElementById('guestNameInput').value = guestName;
+
     // --- VIDEO INTRO CONTROLLER ---
     const introOverlay = document.getElementById('intro-overlay');
     const introVideo = document.getElementById('intro-video');
