@@ -224,6 +224,24 @@ document.getElementById('guestNameInput').value = guestName;
                 console.error('Error!', error.message);
             });
     });
+    // Ensure this script runs ONLY after the HTML completely loads
+window.addEventListener('DOMContentLoaded', () => {
+    
+    // 1. READ NAME FROM URL PARAMETER
+    const urlParams = new URLSearchParams(window.location.search);
+    const rawName = urlParams.get('guest'); 
+    const guestName = rawName ? decodeURIComponent(rawName.replace(/\+/g, ' ')) : "Guest";
+
+    // 2. UPDATE BOTH VISUAL GREETINGS
+    const videoElement = document.getElementById('video-greeting');
+    const rsvpElement = document.getElementById('greeting');
+    const hiddenInput = document.getElementById('guestNameInput');
+
+    if (videoElement) videoElement.textContent = `Dear ${guestName},`;
+    if (rsvpElement) rsvpElement.textContent = `Dear ${guestName},`;
+    if (hiddenInput) hiddenInput.value = guestName;
+});
+
 </script>
 
 </body>
