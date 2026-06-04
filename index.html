@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>You're Invited!</title>
+    <style>
+        /* Global & Reset Styles */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: #fdfbf7; color: #2c3e50; overflow-x: hidden; }
+        
+        /* 1. Fullscreen Video Intro Layer */
+        #intro-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: #000; z-index: 9999; display: flex; justify-content: center; align-items: center;
+            transition: transform 0.8s cubic-bezier(0.77, 0, 0.175, 1);
+        }
+        #intro-video { width: 100%; height: 100%; object-fit: cover; }
+        .skip-btn {
+            position: absolute; bottom: 30px; right: 30px; background: rgba(255,255,255,0.2);
+            color: white; border: 1px solid white; padding: 10px 20px; border-radius: 20px;
+            cursor: pointer; font-size: 14px; backdrop-filter: blur(5px); transition: 0.3s;
+        }
+        .skip-btn:hover { background: white; color: black; }
+
+        /* Main Content Layout */
+        .section { padding: 80px 20px; max-width: 900px; margin: 0 auto; text-align: center; }
+        h2 { font-size: 28px; margin-bottom: 30px; color: #34495e; text-transform: uppercase; letter-spacing: 2px; }
+
+        /* 2. Photo Gallery Section */
+        .gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 20px; }
+        .gallery-grid img { width: 100%; height: 250px; object-fit: cover; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+
+        /* 3. Rundown / Timeline Section */
+        .timeline { max-width: 500px; margin: 0 auto; position: relative; padding-left: 30px; text-align: left; }
+        .timeline::before { content: ''; position: absolute; left: 10px; top: 0; width: 2px; height: 100%; background: #bdc3c7; }
+        .timeline-item { position: relative; margin-bottom: 30px; }
+        .timeline-item::before { content: ''; position: absolute; left: -25px; top: 5px; width: 12px; height: 12px; border-radius: 50%; background: #2ecc71; border: 2px solid white; }
+        .time { font-weight: bold; color: #2ecc71; font-size: 16px; }
+        .event-title { font-size: 18px; font-weight: 600; color: #2c3e50; }
+
+        /* 4. RSVP Section Container */
+        .rsvp-card { background: white; padding: 40px 30px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); max-width: 450px; margin: 0 auto; }
+        #greeting { font-size: 20px; margin-bottom: 25px; font-weight: 600; color: #7f8c8d; }
+        .form-group { margin-bottom: 20px; text-align: left; }
+        label { display: block; margin-bottom: 8px; font-weight: 600; color: #34495e; }
+        select { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 6px; background: white; font-size: 15px; }
+        .radio-group { display: flex; gap: 20px; margin-top: 5px; }
+        .radio-label { display: flex; align-items: center; gap: 6px; cursor: pointer; }
+        button { width: 100%; padding: 14px; background: #2ecc71; border: none; color: white; font-size: 16px; border-radius: 6px; cursor: pointer; font-weight: bold; margin-top: 10px; }
+        button:hover { background: #27ae60; }
+        #message { text-align: center; margin-top: 15px; font-weight: bold; color: #27ae60; }
+    </style>
+</head>
+<body>
+
+    <!-- 1. VIDEO INTRO OVERLAY -->
+    <div id="intro-overlay">
+        <!-- Replace 'your-animation.mp4' with your hosted video file URL -->
+        <video id="intro-video" autoplay muted playsinline>
+            <source src="your-animation.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <button class="skip-btn" onclick="dismissIntro()">Skip Intro</button>
+    </div>
+
+    <!-- MAIN PAGE CONTENT (Hidden until intro dismisses to avoid premature scrolling) -->
+    <main id="main-content">
+        
+        <!-- 2. PHOTOS SECTION -->
+        <section class="section">
+            <h2>Our Moments</h2>
+            <div class="gallery-grid">
+                <!-- Replace these placeholder URLs with your own photo links -->
+                <img src="https://picsum.photos" alt="Event photo 1">
+                <img src="https://picsum.photos" alt="Event photo 2">
+                <img src="https://picsum.photos" alt="Event photo 3">
+            </div>
+        </section>
+
+        <!-- 3. RUNDOWN SECTION -->
+        <section class="section" style="background: #fcfcfc;">
+            <h2>Event Rundown</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="time">05:00 PM</div>
+                    <div class="event-title">Guest Arrival & Welcome Drinks</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="time">06:00 PM</div>
+                    <div class="event-title">Main Ceremony / Opening Act</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="time">07:30 PM</div>
+                    <div class="event-title">Dinner & Celebrations</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="time">10:00 PM</div>
+                    <div class="event-title">Send-off</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. RSVP SECTION -->
+        <section class="section">
+            <h2>RSVP</h2>
+            <div class="rsvp-card">
+                <div id="greeting">Dear Guest,</div>
+
+                <!-- Replace 'YOUR_DEPLOYED_WEB_APP_URL' with your exact Google Apps Script URL -->
+                <form id="rsvpForm" action="https://script.google.com/macros/s/AKfycbyaIT4IfQZiNNlnyBK29HweTIvygSIjkel05g9InNWKLhs37ha7nJyjFgApVmVhBe4fEQ/exec" method="POST">
+                    <input type="hidden" id="guestNameInput" name="guestName">
+
+                    <div class="form-group">
+                        <label>Will you attend?</label>
+                        <div class="radio-group">
+                            <label class="radio-label"><input type="radio" name="attendance" value="Yes" checked onclick="toggleGuests(true)"> Joyfully Accept</label>
+                            <label class="radio-label"><input type="radio" name="attendance" value="No" onclick="toggleGuests(false)"> Regretfully Decline</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group" id="plusOneContainer">
+                        <label for="plusOnes">Bringing any additional guests?</label>
+                        <select id="plusOnes" name="plusOnes">
+                            <option value="0">Just me (0 extra guests)</option>
+                            <option value="1">+1 Guest</option>
+                            <option value="2">+2 Guests</option>
+                            <option value="3">+3 Guests</option>
+                            <option value="4">+4 Guests</option>
+                            <option value="5">+5 Guests</option>
+                        </select>
+                    </div>
+
+                    <button type="submit">Submit RSVP</button>
+                </form>
+                <div id="message"></div>
+            </div>
+        </section>
+
+    </main>
+
+<script>
+    // --- VIDEO INTRO CONTROLLER ---
+    const introOverlay = document.getElementById('intro-overlay');
+    const introVideo = document.getElementById('intro-video');
+
+    function dismissIntro() {
+        // Slides the intro layer upwards off the screen
+        introOverlay.style.transform = 'translateY(-100%)';
+        // Allow garbage collection to stop the video track completely
+        setTimeout(() => introOverlay.remove(), 800); 
+    }
+
+    // Automatically transition to main website when video finishes playing
+    introVideo.onended = function() {
+        dismissIntro();
+    };
+
+
+    // --- URL PARAMETER & RSVP CONTROLLER ---
+    const urlParams = new URLSearchParams(window.location.search);
+    const rawName = urlParams.get('guest'); 
+    const guestName = rawName ? decodeURIComponent(rawName.replace(/\+/g, ' ')) : "Guest";
+    
+    document.getElementById('greeting').textContent = `Dear ${guestName},`;
+    document.getElementById('guestNameInput').value = guestName;
+
+    function toggleGuests(isAttending) {
+        const container = document.getElementById('plusOneContainer');
+        container.style.display = isAttending ? 'block' : 'none';
+        if (!isAttending) document.getElementById('plusOnes').value = "0";
+    }
+
+    // Form Submission Connection
+    const form = document.getElementById('rsvpForm');
+    const msg = document.getElementById('message');
+    
+    form.addEventListener('submit', e => {
+        e.preventDefault();
+        msg.textContent = "Submitting...";
+        
+        fetch(form.action, { method: 'POST', body: new FormData(form)})
+            .then(response => {
+                msg.textContent = "Thank you! Your RSVP has been saved.";
+                form.reset();
+                document.getElementById('guestNameInput').value = guestName;
+            })
+            .catch(error => {
+                msg.textContent = "Error submitting RSVP. Please try again.";
+                console.error('Error!', error.message);
+            });
+    });
+</script>
+
+</body>
+</html>
