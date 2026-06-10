@@ -81,6 +81,40 @@
             font-size: 1rem; 
             font-family: 'Noto Serif Display', serif; 
         }
+          /* New Styling for Minus / Plus Counter Style Layout */
+        .counter-container {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            margin-bottom: 25px;
+            gap: 15px;
+        }
+        .counter-btn {
+            background-color: #f5ede6;
+            color: #8a6d53;
+            border: 1px solid #8a6d53;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            user-select: none;
+            font-weight: bold;
+            transition: all 0.2s;
+        }
+        .counter-btn:hover {
+            background-color: #8a6d53;
+            color: white;
+        }
+        .counter-value {
+            font-size: 1.4rem;
+            font-weight: 600;
+            width: 30px;
+            text-align: center;
+        }
         button { 
             background-color: #8a6d53; 
             color: white; 
@@ -116,7 +150,7 @@
     <section class="gallery" style="margin-top: 20px;">
         <h2>Our Moments</h2>
         <img src="https://res.cloudinary.com/dv3yb6w5s/image/upload/v1781103474/1_qq965e.png" alt="Photo 1">
-        <img src="https://placeholder.com" alt="Photo 2">
+
     </section>
 
     <!-- 3. Event Run Down Section -->
@@ -150,12 +184,16 @@
                 <option value="No">Sorry, I cannot make it</option>
             </select>
 
-            <label for="plusOnes">Add-ons (Plus Ones)</label>
-            <select id="plusOnes">
-                <option value="0">0 (Just me)</option>
-                <option value="1">1 person</option>
-                <option value="2">2 people</option>
-            </select>
+              <!-- Fixed: Changed from dropdown menu to minus / plus button step selection framework -->
+            <label>Add-ons (Plus Ones)</label>
+            <div class="counter-container">
+                <button type="button" class="counter-btn" id="minusBtn">—</button>
+                <span class="counter-value" id="counterValue">0</span>
+                <button type="button" class="counter-btn" id="plusBtn">+</button>
+            </div>
+            
+            <!-- Hidden input to still hold the plusOnes numeric value cleanly for Google Sheet ingestion -->
+            <input type="hidden" id="plusOnes" value="0">
 
             <button type="submit" id="submitBtn">Send Response</button>
         </form>
