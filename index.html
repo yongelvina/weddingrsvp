@@ -3,177 +3,148 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>You are Invited!</title>
+    <title>Wedding Invitation</title>
     <style>
-        :root {
-            --primary-color: #c49a6c; /* Elegant muted gold/rose tone */
-            --bg-color: #faf4f5;      /* Your requested background color */
-            --card-bg: #ffffff;
-            --text-color: #4a4a4a;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Playfair Display', 'Georgia', serif;
-        }
-
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            text-align: center;
-            overflow-x: hidden;
-        }
-
-        /* --- Intro Video Overlay --- */
-        #intro-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: #000;
-            z-index: 9999;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            color: white;
-        }
-
-        #bg-video {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            opacity: 0.7;
-        }
-
-        .intro-content {
-            position: relative;
-            z-index: 10;
-            pointer-events: none; 
-            background: rgba(0, 0, 0, 0.3);
-            padding: 30px;
-            border-radius: 12px;
-            backdrop-filter: blur(3px);
-        }
-
-        .intro-content h1 {
-            font-size: 2.8rem;
-            margin-bottom: 15px;
-            letter-spacing: 2px;
-            font-weight: 400;
-        }
-
-        .intro-content p {
-            font-size: 1.1rem;
-            opacity: 0.9;
-            letter-spacing: 1px;
-        }
-
-        /* --- Main Content Layout --- */
-        section {
-            padding: 90px 20px;
-            max-width: 850px;
-            margin: 0 auto;
-        }
-
-        h2 {
-            font-size: 2.2rem;
-            color: var(--primary-color);
-            margin-bottom: 40px;
-            text-transform: uppercase;
-            letter-spacing: 4px;
-            font-weight: 400;
-        }
-
-        /* Section Divider */
-        .divider {
-            border: 0;
-            border-top: 1px solid #e8dedf;
-            width: 40%;
-            margin: 0 auto;
-        }
-
-        /* Photos Layout */
-        .photo-gallery {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 20px;
-        }
-
-        .photo-gallery img, .single-photo img {
-            width: 100%;
-            height: auto;
-            border-radius: 8px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-            transition: transform 0.3s ease;
-        }
+        body { margin: 0; font-family: 'Segoe UI', Arial, sans-serif; background-color: #fcf8f5; color: #4a4a4a; text-align: center; }
+        section { padding: 60px 20px; box-sizing: border-box; min-height: 80vh; display: flex; flex-direction: column; justify-content: center; align-items: center; }
         
-        .photo-gallery img:hover {
-            transform: scale(1.02);
+        /* Video Section */
+        .hero { position: relative; height: 100vh; overflow: hidden; color: white; }
+        .hero video { position: absolute; top: 50%; left: 50%; min-width: 100%; min-height: 100%; width: auto; height: auto; z-index: -1; transform: translate(-50%, -50%); object-fit: cover; }
+        .hero-content { background: rgba(0,0,0,0.4); width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+        .hero h1 { font-size: 3rem; margin: 10px; }
+        
+        /* General Styles */
+        h2 { font-size: 2.5rem; color: #8a6d53; margin-bottom: 20px; }
+        .gallery img { width: 90%; max-width: 400px; margin: 10px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        .rundown-item { background: white; padding: 15px; margin: 10px; width: 80%; max-width: 500px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        
+        /* RSVP Form */
+        form { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); width: 95%; max-width: 450px; text-align: left; }
+        label { display: block; margin: 12px 0 6px; font-weight: bold; }
+        input, select, textarea { width: 100%; padding: 10px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 6px; margin-bottom: 10px; }
+        button { background-color: #8a6d53; color: white; border: none; padding: 12px; width: 100%; border-radius: 6px; font-size: 1.1rem; cursor: pointer; }
+        button:hover { background-color: #725943; }
+    </style>
+</head>
+<body>
+
+    <!-- 1. Hero Video Section -->
+    <section class="hero">
+        <video autoplay muted loop playsinline>
+            <source src="https://res.cloudinary.com/dv3yb6w5s/video/upload/v1781096934/wedding_background_2_yypz9z.mp4" type="video/mp4">
+        </video>
+        <div class="hero-content">
+            <h1 id="guest-welcome">Dear Guest,</h1>
+            <p style="font-size: 1.5rem;">You are warmly invited to our wedding celebration</p>
+            <p style="margin-top: 50px; font-size: 1rem;">↓ Scroll Down ↓</p>
+        </div>
+    </section>
+
+    <!-- 2. Photos Section -->
+    <section class="gallery">
+        <h2>Our Moments</h2>
+        <!-- Replace placeholder URLs with your actual photo links -->
+        <img src="https://placeholder.com" alt="Photo 1">
+        <img src="https://placeholder.com" alt="Photo 2">
+    </section>
+
+    <!-- 3. Event Run Down Section -->
+    <section style="background-color: #f5ede6;">
+        <h2>Event Schedule</h2>
+        <div class="rundown-item">
+            <strong>04:00 PM</strong> - Welcome Drinks & Guest Arrival
+        </div>
+        <div class="rundown-item">
+            <strong>05:00 PM</strong> - Holy Matrimony Ceremony
+        </div>
+        <div class="rundown-item">
+            <strong>06:30 PM</strong> - Dinner & Celebration
+        </div>
+    </section>
+
+    <!-- 4. RSVP Section -->
+    <section>
+        <h2>RSVP</h2>
+        <form id="rsvpForm">
+            <label for="formName">Your Name</label>
+            <input type="text" id="formName" readonly required>
+
+            <label for="attendance">Will you attend?</label>
+            <select id="attendance" required>
+                <option value="">Choose an option</option>
+                <option value="Yes">Yes, I will be there!</option>
+                <option value="No">Sorry, I cannot make it</option>
+            </select>
+
+            <label for="plusOnes">Add-ons (Plus Ones)</label>
+            <select id="plusOnes">
+                <option value="0">0 (Just me)</option>
+                <option value="1">1 person</option>
+                <option value="2">2 people</option>
+            </select>
+
+            <label for="notes">Dietary Restrictions / Notes</label>
+            <textarea id="notes" rows="3" placeholder="Let us know if you have food allergies..."></textarea>
+
+            <button type="submit" id="submitBtn">Send Response</button>
+        </form>
+    </section>
+
+    <!-- 5. Final Photo Section -->
+    <section class="gallery" style="background-color: #f5ede6;">
+        <h2>See You There!</h2>
+        <img src="https://placeholder.com" alt="Final Photo">
+    </section>
+
+    <script>
+        // REPLACE THIS URL WITH YOUR GOOGLE WEB APP URL FROM STEP 2
+        const scriptURL = 'YOUR_GOOGLE_SCRIPT_WEB_APP_URL_HERE';
+
+        // 1. Get guest name from URL links (e.g., ://website.com)
+        const urlParams = new URLSearchParams(window.location.search);
+        let guestName = urlParams.get('name');
+
+        if (!guestName) {
+            guestName = "Guest";
         }
 
-        /* Address Box */
-        .address-box {
-            background: var(--card-bg);
-            padding: 40px 30px;
-            border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
-        }
+        // 2. Insert name into Welcome title and RSVP form field
+        document.getElementById('guest-welcome').innerText = "Dear " + guestName + ",";
+        document.getElementById('formName').value = guestName;
 
-        .address-box h3 {
-            font-size: 1.6rem;
-            margin-bottom: 10px;
-            color: var(--text-color);
-        }
+        // 3. Handle Form Submission to Google Sheets
+        document.getElementById('rsvpForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.innerText = "Sending...";
+            submitBtn.disabled = true;
 
-        /* Rundown Flow */
-        .rundown-container {
-            max-width: 600px;
-            margin: 0 auto;
-        }
+            const formData = {
+                guestName: document.getElementById('formName').value,
+                attendance: document.getElementById('attendance').value,
+                plusOnes: document.getElementById('plusOnes').value,
+                notes: document.getElementById('notes').value
+            };
 
-        .rundown-item {
-            background: var(--card-bg);
-            padding: 25px 30px;
-            border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
-            margin-bottom: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            text-align: left;
-        }
-
-        .rundown-item h3 {
-            color: var(--primary-color);
-            font-size: 1.3rem;
-            font-weight: 600;
-            min-width: 110px;
-        }
-
-        .rundown-item p {
-            font-size: 1.1rem;
-            color: var(--text-color);
-        }
-
-        /* RSVP Form Styling */
-        form {
-            background: var(--card-bg);
-            padding: 50px 40px;
-            border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
-            text-align: left;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        label {
-            display: block;
-            margin-bottom
+            fetch(scriptURL, {
+                method: 'POST',
+                mode: 'no-cors', // Needed to avoid CORS block with Google Apps Script
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData)
+            })
+            .then(() => {
+                alert('Thank you! Your response has been recorded.');
+                submitBtn.innerText = "Response Sent!";
+            })
+            .catch(error => {
+                console.error('Error!', error.message);
+                alert('Something went wrong. Please try again.');
+                submitBtn.innerText = "Send Response";
+                submitBtn.disabled = false;
+            });
+        });
+    </script>
+</body>
+</html>
