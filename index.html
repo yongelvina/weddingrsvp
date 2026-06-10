@@ -223,7 +223,24 @@
             document.body.style.overflow = 'auto';
             document.body.style.overflowX = 'hidden';
         });
+ // --- NEW: Dynamic Name Parser Logic ---
+        // Looks at the link (e.g., ://website.com) and updates the text
+        const urlParams = new URLSearchParams(window.location.search);
+        const guestName = urlParams.get('name');
 
+        if (guestName) {
+            // Clean up the name string from the URL
+            const formattedName = decodeURIComponent(guestName);
+            
+            // Update the landing screen welcome message
+            document.getElementById('guest-welcome').textContent = `Dear ${formattedName},`;
+            
+            // Update the RSVP form header message
+            document.getElementById('formNameDisplay').textContent = `Dear ${formattedName},`;
+            
+            // Save the value inside the hidden input field for the form submission
+            document.getElementById('formName').value = formattedName;
+        }
         // Plus/Minus Counter Logic
         const minusBtn = document.getElementById('minusBtn');
         const plusBtn = document.getElementById('plusBtn');
