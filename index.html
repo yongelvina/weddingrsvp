@@ -35,6 +35,7 @@
             <source src="https://cloudinary.com" type="video/mp4">
         </video>
         <div class="hero-content">
+            <!-- Dynamically greets the visitor -->
             <h1 id="guest-welcome">Dear Guest,</h1>
             <p style="font-size: 1.5rem;">You are warmly invited to our wedding celebration</p>
             <p style="margin-top: 50px; font-size: 1rem;">↓ Scroll Down ↓</p>
@@ -66,10 +67,10 @@
     <section>
         <h2>RSVP</h2>
         <form id="rsvpForm">
-            <!-- This shows the guest's name personalized (e.g., Dear Mary) instead of an empty box -->
+            <!-- Displays the personalized name line inside the container card instead of an input field -->
             <h3 id="formNameDisplay" style="color: #8a6d53; margin: 0 0 20px 0; font-size: 1.6rem;">Dear Guest,</h3>
             
-            <!-- This hidden input stores the name to send it to your Google Sheet -->
+            <!-- Hidden field maintains tracking variable to deliver data points row-by-row to your Google Sheet -->
             <input type="hidden" id="formName" value="Guest">
 
             <label for="attendance">Will you attend?</label>
@@ -97,14 +98,14 @@
     </section>
 
     <script>
-        // ⚠️ REPLACE THIS URL WITH YOUR DEPLOYED GOOGLE APPS SCRIPT WEB APP URL
+        // ⚠️ REMEMBER: Paste your copied Google Web App URL inside the quotes below!
         const scriptURL = 'YOUR_GOOGLE_SCRIPT_WEB_APP_URL_HERE';
 
-        // Get guest name from the link (e.g., ?name=Mary)
+        // Parse search query variables out of the address bar
         const urlParams = new URLSearchParams(window.location.search);
         let guestName = urlParams.get('name');
 
-        // Apply personalized names if found in the link
+        // Apply string parameters to the greeting nodes dynamically
         if (guestName) {
             document.getElementById('guest-welcome').innerText = "Dear " + guestName + ",";
             document.getElementById('formNameDisplay').innerText = "Dear " + guestName + ",";
@@ -115,7 +116,7 @@
             document.getElementById('formName').value = "Guest";
         }
 
-        // Handle Form Submission to Google Sheets
+        // Form interception logic
         document.getElementById('rsvpForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
@@ -127,7 +128,7 @@
                 guestName: document.getElementById('formName').value,
                 attendance: document.getElementById('attendance').value,
                 plusOnes: document.getElementById('plusOnes').value,
-                notes: "" // Sends empty text since the layout box was deleted
+                notes: "" // Delivers blank text row properties since the dietary form object is removed
             };
 
             fetch(scriptURL, {
