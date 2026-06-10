@@ -33,7 +33,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            transition: transform 1s ease-in-out;
+            transition: transform 1s ease-in-out; /* Smooth slide-up effect when finished */
         }
         #intro-overlay video {
             position: absolute;
@@ -65,15 +65,8 @@
         
         /* General Styles */
         h2 { font-size: 2.8rem; color: #8a6d53; margin-bottom: 20px; font-weight: 500; }
-        
-        .gallery img { 
-            width: 90%; 
-            max-width: 400px; 
-            margin: 10px; 
-            border-radius: 8px; 
-        }
-        
-        .rundown-item { background: white; padding: 20px; margin: 10px; width: 80%; max-width: 500px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); font-size: 1.1rem; }
+        .gallery img { width: 90%; max-width: 400px; margin: 10px; border-radius: 8px; }
+        .rundown-item { background: white; padding: 20px; margin: 10px; width: 80%; max-width: 500px; border-radius: 8px;  font-size: 1.1rem; }
         
         /* RSVP Form */
         form { background: white; padding: 35px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); width: 95%; max-width: 450px; text-align: left; }
@@ -88,43 +81,7 @@
             font-size: 1rem; 
             font-family: 'Noto Serif Display', serif; 
         }
-
-        /* New Styling for Minus / Plus Counter Style Layout */
-        .counter-container {
-            display: flex;
-            align-items: center;
-            justify-content: flex-start;
-            margin-bottom: 25px;
-            gap: 15px;
-        }
-        .counter-btn {
-            background-color: #f5ede6;
-            color: #8a6d53;
-            border: 1px solid #8a6d53;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            font-size: 1.5rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            user-select: none;
-            font-weight: bold;
-            transition: all 0.2s;
-        }
-        .counter-btn:hover {
-            background-color: #8a6d53;
-            color: white;
-        }
-        .counter-value {
-            font-size: 1.4rem;
-            font-weight: 600;
-            width: 30px;
-            text-align: center;
-        }
-
-        button[type="submit"] { 
+        button { 
             background-color: #8a6d53; 
             color: white; 
             border: none; 
@@ -136,13 +93,14 @@
             font-family: 'Noto Serif Display', serif;
             font-weight: 500;
         }
-        button[type="submit"]:hover { background-color: #725943; }
+        button:hover { background-color: #725943; }
     </style>
 </head>
 <body>
 
-    <!-- 1. INTRO VIDEO OVERLAY -->
+    <!-- 1. INTRO VIDEO OVERLAY (Auto-plays and slides up when finished) -->
     <div id="intro-overlay">
+        <!-- Removed 'loop' so the video can actually finish and trigger the jump transition -->
         <video id="landingVideo" autoplay muted playsinline>
             <source src="https://res.cloudinary.com/dv3yb6w5s/video/upload/v1781096934/wedding_background_2_yypz9z.mp4" type="video/mp4">
         </video>
@@ -158,6 +116,7 @@
     <section class="gallery" style="margin-top: 20px;">
         <h2>Our Moments</h2>
         <img src="https://res.cloudinary.com/dv3yb6w5s/image/upload/v1781103474/1_qq965e.png" alt="Photo 1">
+        <img src="https://placeholder.com" alt="Photo 2">
     </section>
 
     <!-- 3. Event Run Down Section -->
@@ -178,7 +137,10 @@
     <section>
         <h2>RSVP</h2>
         <form id="rsvpForm">
+            <!-- Personalized text element directly showing the URL string name -->
             <h3 id="formNameDisplay" style="color: #8a6d53; margin: 0 0 20px 0; font-size: 1.8rem; font-weight: 400;">Dear Guest,</h3>
+            
+            <!-- Hidden input holding values safely for sheet processing background logic -->
             <input type="hidden" id="formName" value="Guest">
 
             <label for="attendance">Will you attend?</label>
@@ -188,16 +150,12 @@
                 <option value="No">Sorry, I cannot make it</option>
             </select>
 
-            <!-- Fixed: Changed from dropdown menu to minus / plus button step selection framework -->
-            <label>Add-ons (Plus Ones)</label>
-            <div class="counter-container">
-                <button type="button" class="counter-btn" id="minusBtn">—</button>
-                <span class="counter-value" id="counterValue">0</span>
-                <button type="button" class="counter-btn" id="plusBtn">+</button>
-            </div>
-            
-            <!-- Hidden input to still hold the plusOnes numeric value cleanly for Google Sheet ingestion -->
-            <input type="hidden" id="plusOnes" value="0">
+            <label for="plusOnes">Add-ons (Plus Ones)</label>
+            <select id="plusOnes">
+                <option value="0">0 (Just me)</option>
+                <option value="1">1 person</option>
+                <option value="2">2 people</option>
+            </select>
 
             <button type="submit" id="submitBtn">Send Response</button>
         </form>
@@ -210,12 +168,14 @@
     </section>
 
     <script>
-        // ⚠️ REMEMBER: Re-paste your Google Web App URL inside the quotes below!
-        const scriptURL = 'https://maps.app.goo.gl/YLKSwG14uhK5YQ6NA';
+        // ⚠️ REPLACE THIS URL WITH YOUR DEPLOYED GOOGLE APPS SCRIPT WEB APP URL
+        const scriptURL = 'YOUR_GOOGLE_SCRIPT_WEB_APP_URL_HERE';
 
+        // Parse search query variables out of the address bar
         const urlParams = new URLSearchParams(window.location.search);
         let guestName = urlParams.get('name');
 
+        // Apply string parameters to the greeting nodes dynamically
         if (guestName) {
             document.getElementById('guest-welcome').innerText = "Dear " + guestName + ",";
             document.getElementById('formNameDisplay').innerText = "Dear " + guestName + ",";
@@ -226,46 +186,54 @@
             document.getElementById('formName').value = "Guest";
         }
 
+        // 🎥 AUTO-MOVE LOGIC WHEN VIDEO ENDS
         const video = document.getElementById('landingVideo');
         const overlay = document.getElementById('intro-overlay');
 
         video.addEventListener('ended', function() {
+            // Smoothly slide the intro cover up into the air
             overlay.style.transform = 'translateY(-100%)';
+            
+            // Remove the overlay completely after 1 second so users can click items underneath
             setTimeout(function() {
                 overlay.style.display = 'none';
             }, 1000);
         });
 
-        // ➕ MINUS / PLUS COUNTER INTERACTION LOGIC
-        const minusBtn = document.getElementById('minusBtn');
-        const plusBtn = document.getElementById('plusBtn');
-        const counterValueDisplay = document.getElementById('counterValue');
-        const plusOnesHiddenInput = document.getElementById('plusOnes');
-        
-        let count = 0;
-        const maxLimit = 5;
-
-        minusBtn.addEventListener('click', function() {
-            if (count > 0) {
-                count--;
-                updateCounter();
-            }
-        });
-
-        plusBtn.addEventListener('click', function() {
-            if (count < maxLimit) {
-                count++;
-                updateCounter();
-            }
-        });
-
-        function updateCounter() {
-            counterValueDisplay.innerText = count;
-            plusOnesHiddenInput.value = count;
-        }
-
-        // Form submission intercept tracking
+        // Handle Form Submission directly to your target Google Sheet
         document.getElementById('rsvpForm').addEventListener('submit', function(e) {
             e.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.innerText = "Sending...";
+            submitBtn.disabled = true;
+
+            const formData = {
+                guestName: document.getElementById('formName').value,
+                attendance: document.getElementById('attendance').value,
+                plusOnes: document.getElementById('plusOnes').value,
+                notes: "" 
+            };
+
+            fetch(scriptURL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData)
+            })
+            .then(() => {
+                alert('Thank you! Your response has been recorded.');
+                submitBtn.innerText = "Response Sent!";
+            })
+            .catch(error => {
+                console.error('Error!', error.message);
+                alert('Something went wrong. Please try again.');
+                submitBtn.innerText = "Send Response";
+                submitBtn.disabled = false;
+            });
+        });
+    </script>
+</body>
+</html>
             
 
