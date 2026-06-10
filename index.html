@@ -73,25 +73,9 @@
             border-radius: 8px; 
         }
         
-        .rundown-item, .location-card { background: white; padding: 20px; margin: 10px; width: 80%; max-width: 500px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); font-size: 1.1rem; }
+        .rundown-item { background: white; padding: 20px; margin: 10px; width: 80%; max-width: 500px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); font-size: 1.1rem; }
         
-        /* Maps Button Layout styling rules */
-        .maps-btn {
-            display: inline-block;
-            background-color: #8a6d53;
-            color: white;
-            text-decoration: none;
-            padding: 12px 25px;
-            border-radius: 6px;
-            margin-top: 15px;
-            font-size: 1.1rem;
-            font-family: 'Noto Serif Display', serif;
-            font-weight: 500;
-            transition: background-color 0.2s;
-        }
-        .maps-btn:hover { background-color: #725943; }
-
-        /* RSVP Form Counter */
+        /* RSVP Form */
         form { background: white; padding: 35px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); width: 95%; max-width: 450px; text-align: left; }
         label { display: block; margin: 15px 0 8px; font-weight: 600; font-size: 1.1rem; color: #5a5a5a; }
         select { 
@@ -105,6 +89,7 @@
             font-family: 'Noto Serif Display', serif; 
         }
 
+        /* New Styling for Minus / Plus Counter Style Layout */
         .counter-container {
             display: flex;
             align-items: center;
@@ -173,7 +158,6 @@
     <section class="gallery" style="margin-top: 20px;">
         <h2>Our Moments</h2>
         <img src="https://res.cloudinary.com/dv3yb6w5s/image/upload/v1781103474/1_qq965e.png" alt="Photo 1">
-        <img src="https://placeholder.com" alt="Photo 2">
     </section>
 
     <!-- 3. Event Run Down Section -->
@@ -190,21 +174,8 @@
         </div>
     </section>
 
-    <!-- 4. Location Section (NEW ELEMENT: Added After Event Schedule Section) -->
+    <!-- 4. RSVP Section -->
     <section>
-        <h2>The Venue</h2>
-        <div class="location-card">
-            <p style="margin: 0 0 10px 0; font-weight: 600; font-size: 1.2rem; color: #8a6d53;">Wedding Celebration Hall</p>
-            <p style="margin: 0; color: #666; font-size: 1rem; line-height: 1.5;">
-                Please join us at our venue. Click the navigation link option below to open up live direction routing parameters instantly.
-            </p>
-            <!-- Integrated your custom Google Maps link -->
-            <a href="https://maps.app.goo.gl/YLKSwG14uhK5YQ6NA" target="_blank" class="maps-btn">📍 View on Google Maps</a>
-        </div>
-    </section>
-
-    <!-- 5. RSVP Section -->
-    <section style="background-color: #f5ede6;">
         <h2>RSVP</h2>
         <form id="rsvpForm">
             <h3 id="formNameDisplay" style="color: #8a6d53; margin: 0 0 20px 0; font-size: 1.8rem; font-weight: 400;">Dear Guest,</h3>
@@ -217,6 +188,7 @@
                 <option value="No">Sorry, I cannot make it</option>
             </select>
 
+            <!-- Fixed: Changed from dropdown menu to minus / plus button step selection framework -->
             <label>Add-ons (Plus Ones)</label>
             <div class="counter-container">
                 <button type="button" class="counter-btn" id="minusBtn">—</button>
@@ -224,14 +196,15 @@
                 <button type="button" class="counter-btn" id="plusBtn">+</button>
             </div>
             
+            <!-- Hidden input to still hold the plusOnes numeric value cleanly for Google Sheet ingestion -->
             <input type="hidden" id="plusOnes" value="0">
 
             <button type="submit" id="submitBtn">Send Response</button>
         </form>
     </section>
 
-    <!-- 6. Final Photo Section -->
-    <section class="gallery">
+    <!-- 5. Final Photo Section -->
+    <section class="gallery" style="background-color: #f5ede6;">
         <h2>See You There!</h2>
         <img src="https://res.cloudinary.com/dv3yb6w5s/image/upload/v1781103483/Untitled_design_8_jrqdts.png" alt="Final Photo">
     </section>
@@ -263,4 +236,36 @@
             }, 1000);
         });
 
-        // COUNTER INTERACTION LOGIC
+        // ➕ MINUS / PLUS COUNTER INTERACTION LOGIC
+        const minusBtn = document.getElementById('minusBtn');
+        const plusBtn = document.getElementById('plusBtn');
+        const counterValueDisplay = document.getElementById('counterValue');
+        const plusOnesHiddenInput = document.getElementById('plusOnes');
+        
+        let count = 0;
+        const maxLimit = 5;
+
+        minusBtn.addEventListener('click', function() {
+            if (count > 0) {
+                count--;
+                updateCounter();
+            }
+        });
+
+        plusBtn.addEventListener('click', function() {
+            if (count < maxLimit) {
+                count++;
+                updateCounter();
+            }
+        });
+
+        function updateCounter() {
+            counterValueDisplay.innerText = count;
+            plusOnesHiddenInput.value = count;
+        }
+
+        // Form submission intercept tracking
+        document.getElementById('rsvpForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+
