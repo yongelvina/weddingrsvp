@@ -4,61 +4,132 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wedding Invitation</title>
+    <!-- Import Noto Serif Display from Google Fonts -->
+    <link rel="preconnect" href="https://googleapis.com">
+    <link rel="preconnect" href="https://gstatic.com" crossorigin>
+    <link href="https://googleapis.com/css2?family=Noto+Serif+Display:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    
     <style>
-        body { margin: 0; font-family: 'Segoe UI', Arial, sans-serif; background-color: #fcf8f5; color: #4a4a4a; text-align: center; }
-        section { padding: 60px 20px; box-sizing: border-box; min-height: 80vh; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+        /* Base styles using Noto Serif Display font */
+        body { 
+            margin: 0; 
+            font-family: 'Noto Serif Display', serif; 
+            background-color: #fcf8f5; 
+            color: #4a4a4a; 
+            text-align: center; 
+            overflow-x: hidden;
+        }
         
-        /* Video Section */
-        .hero { position: relative; height: 100vh; overflow: hidden; color: white; }
-        .hero video { position: absolute; top: 50%; left: 50%; min-width: 100%; min-height: 100%; width: auto; height: auto; z-index: -1; transform: translate(-50%, -50%); object-fit: cover; }
-        .hero-content { background: rgba(0,0,0,0.4); width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; }
-        .hero h1 { font-size: 3rem; margin: 10px; }
+        /* 1. Full Screen Intro Video Overlay */
+        #intro-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background-color: #000;
+            z-index: 9999;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: transform 1s ease-in-out; /* Smooth slide-up effect when finished */
+        }
+        #intro-overlay video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            transform: translate(-50%, -50%);
+            object-fit: cover;
+        }
+        #intro-overlay .hero-content {
+            position: relative;
+            z-index: 10;
+            background: rgba(0,0,0,0.3);
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+        }
+        #intro-overlay h1 { font-size: 3.5rem; margin: 10px; font-weight: 400; }
+
+        /* Invitation Content Layout sections */
+        section { padding: 80px 20px; box-sizing: border-box; min-height: 80vh; display: flex; flex-direction: column; justify-content: center; align-items: center; }
         
         /* General Styles */
-        h2 { font-size: 2.5rem; color: #8a6d53; margin-bottom: 20px; }
+        h2 { font-size: 2.8rem; color: #8a6d53; margin-bottom: 20px; font-weight: 500; }
         .gallery img { width: 90%; max-width: 400px; margin: 10px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
-        .rundown-item { background: white; padding: 15px; margin: 10px; width: 80%; max-width: 500px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .rundown-item { background: white; padding: 20px; margin: 10px; width: 80%; max-width: 500px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); font-size: 1.1rem; }
         
         /* RSVP Form */
-        form { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); width: 95%; max-width: 450px; text-align: left; }
-        label { display: block; margin: 12px 0 6px; font-weight: bold; }
-        select { width: 100%; padding: 10px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 6px; margin-bottom: 20px; font-size: 1rem; }
-        button { background-color: #8a6d53; color: white; border: none; padding: 12px; width: 100%; border-radius: 6px; font-size: 1.1rem; cursor: pointer; }
+        form { background: white; padding: 35px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); width: 95%; max-width: 450px; text-align: left; }
+        label { display: block; margin: 15px 0 8px; font-weight: 600; font-size: 1.1rem; color: #5a5a5a; }
+        select { 
+            width: 100%; 
+            padding: 12px; 
+            box-sizing: border-box; 
+            border: 1px solid #ccc; 
+            border-radius: 6px; 
+            margin-bottom: 20px; 
+            font-size: 1rem; 
+            font-family: 'Noto Serif Display', serif; 
+        }
+        button { 
+            background-color: #8a6d53; 
+            color: white; 
+            border: none; 
+            padding: 14px; 
+            width: 100%; 
+            border-radius: 6px; 
+            font-size: 1.2rem; 
+            cursor: pointer; 
+            font-family: 'Noto Serif Display', serif;
+            font-weight: 500;
+        }
         button:hover { background-color: #725943; }
     </style>
 </head>
 <body>
 
-    <!-- 1. Hero Video Section -->
-    <section class="hero">
-        <video autoplay muted loop playsinline>
-            <source src="https://cloudinary.com" type="video/mp4">
+    <!-- 1. INTRO VIDEO OVERLAY (Auto-plays and slides up when finished) -->
+    <div id="intro-overlay">
+        <!-- Removed 'loop' so the video can actually finish and trigger the jump transition -->
+        <video id="landingVideo" autoplay muted playsinline>
+            <source src="https://res.cloudinary.com/dv3yb6w5s/video/upload/v1781096934/wedding_background_2_yypz9z.mp4" type="video/mp4">
         </video>
         <div class="hero-content">
-            <!-- Dynamically greets the visitor -->
             <h1 id="guest-welcome">Dear Guest,</h1>
-            <p style="font-size: 1.5rem;">You are warmly invited to our wedding celebration</p>
-            <p style="margin-top: 50px; font-size: 1rem;">↓ Scroll Down ↓</p>
+            <p style="font-size: 1.6rem; font-style: italic;">You are warmly invited to our wedding celebration</p>
         </div>
-    </section>
+    </div>
 
+    <!-- MAIN INVITATION CONTENT STARTS HERE -->
+    
     <!-- 2. Photos Section -->
-    <section class="gallery">
+    <section class="gallery" style="margin-top: 20px;">
         <h2>Our Moments</h2>
         <img src="https://res.cloudinary.com/dv3yb6w5s/image/upload/v1781103474/1_qq965e.png" alt="Photo 1">
+        <img src="https://placeholder.com" alt="Photo 2">
     </section>
 
     <!-- 3. Event Run Down Section -->
     <section style="background-color: #f5ede6;">
         <h2>Event Schedule</h2>
         <div class="rundown-item">
-            <strong>04:00 PM</strong> - Welcome Drinks & Guest Arrival
+            <strong style="color: #8a6d53;">04:00 PM</strong><br>Welcome Drinks & Guest Arrival
         </div>
         <div class="rundown-item">
-            <strong>05:00 PM</strong> - Holy Matrimony Ceremony
+            <strong style="color: #8a6d53;">05:00 PM</strong><br>Holy Matrimony Ceremony
         </div>
         <div class="rundown-item">
-            <strong>06:30 PM</strong> - Dinner & Celebration
+            <strong style="color: #8a6d53;">06:30 PM</strong><br>Dinner & Celebration
         </div>
     </section>
 
@@ -66,10 +137,10 @@
     <section>
         <h2>RSVP</h2>
         <form id="rsvpForm">
-            <!-- Displays the personalized name line inside the container card instead of an input field -->
-            <h3 id="formNameDisplay" style="color: #8a6d53; margin: 0 0 20px 0; font-size: 1.6rem;">Dear Guest,</h3>
+            <!-- Personalized text element directly showing the URL string name -->
+            <h3 id="formNameDisplay" style="color: #8a6d53; margin: 0 0 20px 0; font-size: 1.8rem; font-weight: 400;">Dear Guest,</h3>
             
-            <!-- Hidden field maintains tracking variable to deliver data points row-by-row to your Google Sheet -->
+            <!-- Hidden input holding values safely for sheet processing background logic -->
             <input type="hidden" id="formName" value="Guest">
 
             <label for="attendance">Will you attend?</label>
@@ -97,7 +168,7 @@
     </section>
 
     <script>
-        // ⚠️ REMEMBER: Paste your copied Google Web App URL inside the quotes below!
+        // ⚠️ REPLACE THIS URL WITH YOUR DEPLOYED GOOGLE APPS SCRIPT WEB APP URL
         const scriptURL = 'YOUR_GOOGLE_SCRIPT_WEB_APP_URL_HERE';
 
         // Parse search query variables out of the address bar
@@ -115,7 +186,21 @@
             document.getElementById('formName').value = "Guest";
         }
 
-        // Form interception logic
+        // 🎥 AUTO-MOVE LOGIC WHEN VIDEO ENDS
+        const video = document.getElementById('landingVideo');
+        const overlay = document.getElementById('intro-overlay');
+
+        video.addEventListener('ended', function() {
+            // Smoothly slide the intro cover up into the air
+            overlay.style.transform = 'translateY(-100%)';
+            
+            // Remove the overlay completely after 1 second so users can click items underneath
+            setTimeout(function() {
+                overlay.style.display = 'none';
+            }, 1000);
+        });
+
+        // Handle Form Submission directly to your target Google Sheet
         document.getElementById('rsvpForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
@@ -127,7 +212,7 @@
                 guestName: document.getElementById('formName').value,
                 attendance: document.getElementById('attendance').value,
                 plusOnes: document.getElementById('plusOnes').value,
-                notes: "" // Delivers blank text row properties since the dietary form object is removed
+                notes: "" 
             };
 
             fetch(scriptURL, {
