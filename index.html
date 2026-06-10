@@ -237,39 +237,39 @@
                 overlay.style.display = 'none';
             }, 1000);
         });
+        
 
-        // Handle Form Submission directly to your target Google Sheet
+         // ➕ MINUS / PLUS COUNTER INTERACTION LOGIC
+        const minusBtn = document.getElementById('minusBtn');
+        const plusBtn = document.getElementById('plusBtn');
+        const counterValueDisplay = document.getElementById('counterValue');
+        const plusOnesHiddenInput = document.getElementById('plusOnes');
+        
+        let count = 0;
+        const maxLimit = 5;
+
+        minusBtn.addEventListener('click', function() {
+            if (count > 0) {
+                count--;
+                updateCounter();
+            }
+        });
+
+        plusBtn.addEventListener('click', function() {
+            if (count < maxLimit) {
+                count++;
+                updateCounter();
+            }
+        });
+
+        function updateCounter() {
+            counterValueDisplay.innerText = count;
+            plusOnesHiddenInput.value = count;
+        }
+
+        // Form submission intercept tracking
         document.getElementById('rsvpForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            
-            const submitBtn = document.getElementById('submitBtn');
-            submitBtn.innerText = "Sending...";
-            submitBtn.disabled = true;
-
-            const formData = {
-                guestName: document.getElementById('formName').value,
-                attendance: document.getElementById('attendance').value,
-                plusOnes: document.getElementById('plusOnes').value,
-                notes: "" 
-            };
-
-            fetch(scriptURL, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formData)
-            })
-            .then(() => {
-                alert('Thank you! Your response has been recorded.');
-                submitBtn.innerText = "Response Sent!";
-            })
-            .catch(error => {
-                console.error('Error!', error.message);
-                alert('Something went wrong. Please try again.');
-                submitBtn.innerText = "Send Response";
-                submitBtn.disabled = false;
-            });
-        });
     </script>
 </body>
 </html>
