@@ -17,7 +17,8 @@
             background-color: #fcf8f5; 
             color: #4a4a4a; 
             text-align: center; 
-            overflow-x: hidden;
+            /* Stop scrolling when the page first loads */
+            overflow: hidden; 
         }
         
         /* 1. Full Screen Intro Video Overlay */
@@ -45,11 +46,14 @@
             height: auto;
             transform: translate(-50%, -50%);
             object-fit: cover;
+            /* Force full 100% opacity visibility */
+            opacity: 1 !important; 
         }
         #intro-overlay .hero-content {
             position: relative;
             z-index: 10;
-            background: rgba(0,0,0,0.3);
+            /* Removed the dark background mask overlay */
+            background: transparent; 
             width: 100%;
             height: 100%;
             display: flex;
@@ -81,7 +85,7 @@
             font-size: 1rem; 
             font-family: 'Noto Serif Display', serif; 
         }
-          /* New Styling for Minus / Plus Counter Style Layout */
+        /* New Styling for Minus / Plus Counter Style Layout */
         .counter-container {
             display: flex;
             align-items: center;
@@ -150,7 +154,6 @@
     <section class="gallery" style="margin-top: 20px;">
         <h2>Our Moments</h2>
         <img src="https://res.cloudinary.com/dv3yb6w5s/image/upload/v1781103474/1_qq965e.png" alt="Photo 1">
-
     </section>
 
     <!-- 3. Event Run Down Section -->
@@ -184,7 +187,7 @@
                 <option value="No">Sorry, I cannot make it</option>
             </select>
 
-              <!-- Fixed: Changed from dropdown menu to minus / plus button step selection framework -->
+            <!-- Fixed: Changed from dropdown menu to minus / plus button step selection framework -->
             <label>Add-ons (Plus Ones)</label>
             <div class="counter-container">
                 <button type="button" class="counter-btn" id="minusBtn">—</button>
@@ -207,71 +210,43 @@
 
     <script>
         // ⚠️ REPLACE THIS URL WITH YOUR DEPLOYED GOOGLE APPS SCRIPT WEB APP URL
-        const scriptURL = 'YOUR_GOOGLE_SCRIPT_WEB_APP_URL_HERE';
+        const scriptURL = 'https://docs.google.com/spreadsheets/d/1mEPzOHpckNT0AtLmMu8mjB1ZCJs986RzVcNTT7TUdx0/edit?usp=sharing';
 
-        // Parse search query variables out of the address bar
-        const urlParams = new URLSearchParams(window.location.search);
-        let guestName = urlParams.get('name');
+        // Video scroll lock and layout transition logic
+        const landingVideo = document.getElementById('landingVideo');
+        const introOverlay = document.getElementById('intro-overlay');
 
-        // Apply string parameters to the greeting nodes dynamically
-        if (guestName) {
-            document.getElementById('guest-welcome').innerText = "Dear " + guestName + ",";
-            document.getElementById('formNameDisplay').innerText = "Dear " + guestName + ",";
-            document.getElementById('formName').value = guestName;
-        } else {
-            document.getElementById('guest-welcome').innerText = "Dear Guest,";
-            document.getElementById('formNameDisplay').innerText = "Dear Guest,";
-            document.getElementById('formName').value = "Guest";
-        }
-
-        // 🎥 AUTO-MOVE LOGIC WHEN VIDEO ENDS
-        const video = document.getElementById('landingVideo');
-        const overlay = document.getElementById('intro-overlay');
-
-        video.addEventListener('ended', function() {
-            // Smoothly slide the intro cover up into the air
-            overlay.style.transform = 'translateY(-100%)';
-            
-            // Remove the overlay completely after 1 second so users can click items underneath
-            setTimeout(function() {
-                overlay.style.display = 'none';
-            }, 1000);
+        landingVideo.addEventListener('ended', function() {
+            // Slide up the intro overlay screen
+            introOverlay.style.transform = 'translateY(-100%)';
+            // Allow scrolling on the main page content now that video is finished
+            document.body.style.overflow = 'auto';
+            document.body.style.overflowX = 'hidden';
         });
-        
 
-         // ➕ MINUS / PLUS COUNTER INTERACTION LOGIC
+        // Plus/Minus Counter Logic
         const minusBtn = document.getElementById('minusBtn');
         const plusBtn = document.getElementById('plusBtn');
-        const counterValueDisplay = document.getElementById('counterValue');
-        const plusOnesHiddenInput = document.getElementById('plusOnes');
-        
+        const counterValue = document.getElementById('counterValue');
+        const plusOnesInput = document.getElementById('plusOnes');
         let count = 0;
-        const maxLimit = 5;
 
-        minusBtn.addEventListener('click', function() {
+        plusBtn.addEventListener('click', () => {
+            count++;
+            counterValue.textContent = count;
+            plusOnesInput.value = count;
+        });
+
+        minusBtn.addEventListener('click', () => {
             if (count > 0) {
                 count--;
-                updateCounter();
+                counterValue.textContent = count;
+                plusOnesInput.value = count;
             }
         });
-
-        plusBtn.addEventListener('click', function() {
-            if (count < maxLimit) {
-                count++;
-                updateCounter();
-            }
-        });
-
-        function updateCounter() {
-            counterValueDisplay.innerText = count;
-            plusOnesHiddenInput.value = count;
-        }
-
-        // Form submission intercept tracking
-        document.getElementById('rsvpForm').addEventListener('submit', function(e) {
-            e.preventDefault();
     </script>
 </body>
 </html>
+
             
 
