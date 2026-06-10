@@ -22,7 +22,7 @@
         /* RSVP Form */
         form { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); width: 95%; max-width: 450px; text-align: left; }
         label { display: block; margin: 12px 0 6px; font-weight: bold; }
-        input, select { width: 100%; padding: 10px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 6px; margin-bottom: 10px; }
+        select { width: 100%; padding: 10px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 6px; margin-bottom: 20px; font-size: 1rem; }
         button { background-color: #8a6d53; color: white; border: none; padding: 12px; width: 100%; border-radius: 6px; font-size: 1.1rem; cursor: pointer; }
         button:hover { background-color: #725943; }
     </style>
@@ -35,7 +35,6 @@
             <source src="https://cloudinary.com" type="video/mp4">
         </video>
         <div class="hero-content">
-            <!-- Fixed: This will change dynamically based on the link name -->
             <h1 id="guest-welcome">Dear Guest,</h1>
             <p style="font-size: 1.5rem;">You are warmly invited to our wedding celebration</p>
             <p style="margin-top: 50px; font-size: 1rem;">↓ Scroll Down ↓</p>
@@ -67,9 +66,11 @@
     <section>
         <h2>RSVP</h2>
         <form id="rsvpForm">
-            <!-- Fixed: Box is editable so the guest can type or confirm their name -->
-            <label for="formName">Your Name</label>
-            <input type="text" id="formName" placeholder="Please enter your name" required>
+            <!-- This shows the guest's name personalized (e.g., Dear Mary) instead of an empty box -->
+            <h3 id="formNameDisplay" style="color: #8a6d53; margin: 0 0 20px 0; font-size: 1.6rem;">Dear Guest,</h3>
+            
+            <!-- This hidden input stores the name to send it to your Google Sheet -->
+            <input type="hidden" id="formName" value="Guest">
 
             <label for="attendance">Will you attend?</label>
             <select id="attendance" required>
@@ -85,8 +86,6 @@
                 <option value="2">2 people</option>
             </select>
 
-            <!-- Fixed: Dietary Restrictions / Notes box has been deleted from here -->
-
             <button type="submit" id="submitBtn">Send Response</button>
         </form>
     </section>
@@ -98,18 +97,22 @@
     </section>
 
     <script>
-        // REPLACE THIS URL WITH YOUR GOOGLE WEB APP URL FROM GOOGLE APPS SCRIPT
+        // ⚠️ REPLACE THIS URL WITH YOUR DEPLOYED GOOGLE APPS SCRIPT WEB APP URL
         const scriptURL = 'YOUR_GOOGLE_SCRIPT_WEB_APP_URL_HERE';
 
-        // Get guest name from URL parameters (e.g., ?name=Mary)
+        // Get guest name from the link (e.g., ?name=Mary)
         const urlParams = new URLSearchParams(window.location.search);
         let guestName = urlParams.get('name');
 
-        // Fixed logic: Set the top greeting to the name, but leave the form field empty/editable for them to type 
+        // Apply personalized names if found in the link
         if (guestName) {
             document.getElementById('guest-welcome').innerText = "Dear " + guestName + ",";
+            document.getElementById('formNameDisplay').innerText = "Dear " + guestName + ",";
+            document.getElementById('formName').value = guestName;
         } else {
             document.getElementById('guest-welcome').innerText = "Dear Guest,";
+            document.getElementById('formNameDisplay').innerText = "Dear Guest,";
+            document.getElementById('formName').value = "Guest";
         }
 
         // Handle Form Submission to Google Sheets
@@ -124,7 +127,7 @@
                 guestName: document.getElementById('formName').value,
                 attendance: document.getElementById('attendance').value,
                 plusOnes: document.getElementById('plusOnes').value,
-                notes: "" // Fixed: Sends blank text since box was deleted
+                notes: "" // Sends empty text since the layout box was deleted
             };
 
             fetch(scriptURL, {
@@ -136,7 +139,6 @@
             .then(() => {
                 alert('Thank you! Your response has been recorded.');
                 submitBtn.innerText = "Response Sent!";
-                document.getElementById('rsvpForm').reset();
             })
             .catch(error => {
                 console.error('Error!', error.message);
