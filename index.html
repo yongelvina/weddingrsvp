@@ -22,7 +22,7 @@
         /* RSVP Form */
         form { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); width: 95%; max-width: 450px; text-align: left; }
         label { display: block; margin: 12px 0 6px; font-weight: bold; }
-        input, select, textarea { width: 100%; padding: 10px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 6px; margin-bottom: 10px; }
+        input, select { width: 100%; padding: 10px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 6px; margin-bottom: 10px; }
         button { background-color: #8a6d53; color: white; border: none; padding: 12px; width: 100%; border-radius: 6px; font-size: 1.1rem; cursor: pointer; }
         button:hover { background-color: #725943; }
     </style>
@@ -32,9 +32,10 @@
     <!-- 1. Hero Video Section -->
     <section class="hero">
         <video autoplay muted loop playsinline>
-            <source src="https://res.cloudinary.com/dv3yb6w5s/video/upload/v1781096934/wedding_background_2_yypz9z.mp4" type="video/mp4">
+            <source src="https://cloudinary.com" type="video/mp4">
         </video>
         <div class="hero-content">
+            <!-- Fixed: This will change dynamically based on the link name -->
             <h1 id="guest-welcome">Dear Guest,</h1>
             <p style="font-size: 1.5rem;">You are warmly invited to our wedding celebration</p>
             <p style="margin-top: 50px; font-size: 1rem;">↓ Scroll Down ↓</p>
@@ -44,7 +45,6 @@
     <!-- 2. Photos Section -->
     <section class="gallery">
         <h2>Our Moments</h2>
-        <!-- Replace placeholder URLs with your actual photo links -->
         <img src="https://placeholder.com" alt="Photo 1">
         <img src="https://placeholder.com" alt="Photo 2">
     </section>
@@ -67,8 +67,9 @@
     <section>
         <h2>RSVP</h2>
         <form id="rsvpForm">
+            <!-- Fixed: Box is editable so the guest can type or confirm their name -->
             <label for="formName">Your Name</label>
-            <input type="text" id="formName" readonly required>
+            <input type="text" id="formName" placeholder="Please enter your name" required>
 
             <label for="attendance">Will you attend?</label>
             <select id="attendance" required>
@@ -84,8 +85,7 @@
                 <option value="2">2 people</option>
             </select>
 
-            <label for="notes">Dietary Restrictions / Notes</label>
-            <textarea id="notes" rows="3" placeholder="Let us know if you have food allergies..."></textarea>
+            <!-- Fixed: Dietary Restrictions / Notes box has been deleted from here -->
 
             <button type="submit" id="submitBtn">Send Response</button>
         </form>
@@ -98,22 +98,21 @@
     </section>
 
     <script>
-        // REPLACE THIS URL WITH YOUR GOOGLE WEB APP URL FROM STEP 2
+        // REPLACE THIS URL WITH YOUR GOOGLE WEB APP URL FROM GOOGLE APPS SCRIPT
         const scriptURL = 'YOUR_GOOGLE_SCRIPT_WEB_APP_URL_HERE';
 
-        // 1. Get guest name from URL links (e.g., ://website.com)
+        // Get guest name from URL parameters (e.g., ?name=Mary)
         const urlParams = new URLSearchParams(window.location.search);
         let guestName = urlParams.get('name');
 
-        if (!guestName) {
-            guestName = "Guest";
+        // Fixed logic: Set the top greeting to the name, but leave the form field empty/editable for them to type 
+        if (guestName) {
+            document.getElementById('guest-welcome').innerText = "Dear " + guestName + ",";
+        } else {
+            document.getElementById('guest-welcome').innerText = "Dear Guest,";
         }
 
-        // 2. Insert name into Welcome title and RSVP form field
-        document.getElementById('guest-welcome').innerText = "Dear " + guestName + ",";
-        document.getElementById('formName').value = guestName;
-
-        // 3. Handle Form Submission to Google Sheets
+        // Handle Form Submission to Google Sheets
         document.getElementById('rsvpForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
@@ -125,18 +124,19 @@
                 guestName: document.getElementById('formName').value,
                 attendance: document.getElementById('attendance').value,
                 plusOnes: document.getElementById('plusOnes').value,
-                notes: document.getElementById('notes').value
+                notes: "" // Fixed: Sends blank text since box was deleted
             };
 
             fetch(scriptURL, {
                 method: 'POST',
-                mode: 'no-cors', // Needed to avoid CORS block with Google Apps Script
+                mode: 'no-cors',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(formData)
             })
             .then(() => {
                 alert('Thank you! Your response has been recorded.');
                 submitBtn.innerText = "Response Sent!";
+                document.getElementById('rsvpForm').reset();
             })
             .catch(error => {
                 console.error('Error!', error.message);
