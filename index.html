@@ -37,18 +37,20 @@
             transition: transform 1s ease-in-out; /* Smooth slide-up effect when finished */
         }
         #intro-overlay video {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            min-width: 100%;
-            min-height: 100%;
-            width: auto;
-            height: auto;
-            transform: translate(-50%, -50%);
-            object-fit: cover;
-            /* Force full 100% opacity visibility */
-            opacity: 1 !important; 
-        }
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    /* Fix: Force the video height to match the screen exactly */
+    height: 100%; 
+    width: auto;
+    transform: translate(-50%, -50%);
+    /* Fix: Fit the video inside the container without cropping or zooming */
+    object-fit: contain; 
+    /* Force full 100% opacity visibility */
+    opacity: 1 !important; 
+}
+
+        
         #intro-overlay .hero-content {
             position: relative;
             z-index: 10;
