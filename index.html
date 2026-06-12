@@ -140,10 +140,16 @@
 
     <!-- 1. INTRO VIDEO OVERLAY (Auto-plays and slides up when finished) -->
     <div id="intro-overlay">
-        <!-- Removed 'loop' so the video can actually finish and trigger the jump transition -->
-        <video id="landingVideo" autoplay playsinline>
-            <source src="https://res.cloudinary.com/dv3yb6w5s/video/upload/v1781282011/copy_2ADA71FC-57B2-4BCD-B416-93C1C6D86BBB_1_bjkngp.mp4" type="video/mp4">
-        </video>
+    <!-- Notice we removed autoplay here so it waits for the click -->
+    <video id="landingVideo" playsinline>
+        <source src="your-video.mp4" type="video/mp4">
+    </video>
+
+   <!-- The new Unmute / Mute Button -->
+    <button id="unmuteBtn" style="position: absolute; bottom: 20px; left: 20px; z-index: 10000; background: rgba(255,255,255,0.7); border: none; padding: 10px 20px; border-radius: 20px; cursor: pointer; font-family: sans-serif;">
+        🔈 Play Sound
+    </button>
+        
         <div class="hero-content">
             <h1 id="guest-welcome">dear Guest,</h1>
             <p style="font-size: 1rem; font-style: italic;">let's celebrate love! A warm invite to our wedding. <3</p>
@@ -230,6 +236,25 @@
             // Save the value inside the hidden input field for the form submission
             document.getElementById('formName').value = formattedName;
         }
+        // Video and layout elements
+const landingVideo = document.getElementById('landingVideo');
+const introOverlay = document.getElementById('intro-overlay');
+const skipBtn = document.getElementById('skipBtn');
+const unmuteBtn = document.getElementById('unmuteBtn'); // Target the new button
+
+// Toggle sound function
+unmuteBtn.addEventListener('click', function(e) {
+    e.stopPropagation(); // Stops conflicts with other click actions
+    
+    if (landingVideo.muted) {
+        landingVideo.muted = false;         // Turn sound ON
+        unmuteBtn.innerText = "🔇";   // Change button text
+    } else {
+        landingVideo.muted = true;          // Turn sound OFF
+        unmuteBtn.innerText = "🔈"; // Change button text back
+    }
+});
+
         // Plus/Minus Counter Logic
         const minusBtn = document.getElementById('minusBtn');
         const plusBtn = document.getElementById('plusBtn');
