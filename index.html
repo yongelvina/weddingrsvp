@@ -141,8 +141,8 @@
     <!-- 1. INTRO VIDEO OVERLAY (Auto-plays and slides up when finished) -->
     <div id="intro-overlay">
         <!-- Removed 'loop' so the video can actually finish and trigger the jump transition -->
-        <video id="landingVideo" autoplay muted playsinline>
-            <source src="https://res.cloudinary.com/dv3yb6w5s/video/upload/v1781280505/copy_EBE05908-28DF-47C9-8D4F-CACB0C47E701_aroxax.mp4" type="video/mp4">
+        <video id="landingVideo" autoplay playsinline>
+            <source src="https://res.cloudinary.com/dv3yb6w5s/video/upload/v1781282011/copy_2ADA71FC-57B2-4BCD-B416-93C1C6D86BBB_1_bjkngp.mp4" type="video/mp4">
         </video>
         <div class="hero-content">
             <h1 id="guest-welcome">dear Guest,</h1>
@@ -211,20 +211,7 @@
     </section>
 
     <script>
-        // ⚠️ REPLACE THIS URL WITH YOUR DEPLOYED GOOGLE APPS SCRIPT WEB APP URL
-        const scriptURL = 'https://docs.google.com/spreadsheets/d/1mEPzOHpckNT0AtLmMu8mjB1ZCJs986RzVcNTT7TUdx0/edit?usp=sharing';
-
-        // Video scroll lock and layout transition logic
-        const landingVideo = document.getElementById('landingVideo');
-        const introOverlay = document.getElementById('intro-overlay');
-
-        landingVideo.addEventListener('ended', function() {
-            // Slide up the intro overlay screen
-            introOverlay.style.transform = 'translateY(-100%)';
-            // Allow scrolling on the main page content now that video is finished
-            document.body.style.overflow = 'auto';
-            document.body.style.overflowX = 'hidden';
-        });
+        <video id="landingVideo" autoplay playsinline>
  // --- NEW: Dynamic Name Parser Logic ---
         // Looks at the link (e.g., ://website.com) and updates the text
         const urlParams = new URLSearchParams(window.location.search);
